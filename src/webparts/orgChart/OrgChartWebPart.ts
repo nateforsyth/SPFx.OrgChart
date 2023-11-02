@@ -168,10 +168,10 @@ export default class OrgChartWebPart extends BaseClientSideWebPart<IOrgChartWebP
             {
               groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneToggle('useGraphApi', {
-                  label: "Use AD data to build the org chart",
-                  checked: false,
-                }),
+                // PropertyPaneToggle('useGraphApi', {
+                //   label: "Use AD data to build the org chart",
+                //   checked: false,
+                // }),
                 PropertyPaneDropdown('selectedList', {
                   label: "Select Org Config List",
                   options: this._listDropDownOptions,

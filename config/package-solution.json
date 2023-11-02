@@ -14,12 +14,7 @@
     "isDomainIsolated": false,
     "includeClientSideAssets": true,
     "skipFeatureDeployment": false,
-    "webApiPermissionRequests": [
-      {
-        "resource": "Microsoft Graph",
-        "scope": "User.Read User.ReadBasic.All  User.Read.All Directory.Read.All"
-      }
-    ],
+    "webApiPermissionRequests": [],
     "features": [{
      "title": "asset-deployment-org-chart",
      "description": "asset-deployment-org-chart",
