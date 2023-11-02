@@ -12,6 +12,6 @@ build.addSuppression(`Warning - [sass] The local CSS class 'ms-ListScrollingExam
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-ListScrollingExample-itemContent-even' is not camelCase and will not be type-safe.`);
 build.addSuppression(`Warning - [sass] The local CSS class 'ms-ListScrollingExample-selected' is not camelCase and will not be type-safe.`);
 
-build.addSuppression(`Warning - tslint - src\controls\CreateListDialog\CreateListDialog.tsx(78,237): error no-unused-expression: unused expression, expected an assignment or function call`);
+build.addSuppression(`Warning - tslint - src/controls/CreateListDialog/CreateListDialog.tsx(78,237): error no-unused-expression: unused expression, expected an assignment or function call`);
 
 build.initialize(gulp);
