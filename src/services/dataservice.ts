@@ -1,6 +1,6 @@
 import { MSGraphClient, SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
-import pnp, { FieldAddResult, FieldCreationProperties, List, ListAddResult, ProcessHttpClientResponseException } from "@pnp/pnpjs";
+import pnp, { FieldAddResult, List, ListAddResult, ProcessHttpClientResponseException } from "@pnp/pnpjs";
 import ErrorHandler from '../helpers/ErrorHandler';
 import { IDataService } from '../interfaces/IDataService';
 import { IGraphUserdata } from "../interfaces/IGraphUserdata";
@@ -132,10 +132,7 @@ export default class DataService implements IDataService {
       console.log(`invoking configureOrgList`, spListAddResult);
 
       console.log(`Adding Field: ORG_Department`);
-      let fcpDepartment: FieldCreationProperties = {
-        Title: "Department"
-      };
-      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addText("ORG_Department", null, fcpDepartment)
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addText("ORG_Department")
         .then((field: FieldAddResult) => {
           console.log(`success`);
         }).catch((err: any) => {
@@ -143,10 +140,7 @@ export default class DataService implements IDataService {
         });
 
       console.log(`Adding Field: ORG_Description`);
-      let fcpDescription: FieldCreationProperties = {
-        Title: "Description"
-      };
-      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addText("ORG_Description", null, fcpDescription)
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addText("ORG_Description")
         .then((field: FieldAddResult) => {
           console.log(`success`);
         })
@@ -156,10 +150,7 @@ export default class DataService implements IDataService {
         });
 
       console.log(`Adding Field: ORG_Picture`);
-      let fcpPicture: FieldCreationProperties = {
-        Title: "Picture"
-      };
-      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addUrl("ORG_Picture", null, fcpPicture)
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addUrl("ORG_Picture")
         .then((field: FieldAddResult) => {
           console.log(`success`);
         })
@@ -168,10 +159,7 @@ export default class DataService implements IDataService {
         });
 
       console.log(`Adding Field: ORG_MyReportees`);
-      let fcpMyReportees: FieldCreationProperties = {
-        Title: "My Reportees"
-      };
-      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addLookup("ORG_MyReportees", spListAddResult.data.Id, "Title", fcpMyReportees)
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addLookup("ORG_MyReportees", spListAddResult.data.Id, "Title")
         .then((field: FieldAddResult) => {
           console.log(`success`);
         })
