@@ -1,6 +1,6 @@
 import { MSGraphClient, SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
-import pnp, { ContentTypeAddResult, List, ListAddResult, ProcessHttpClientResponseException } from "@pnp/pnpjs";
+import pnp, { FieldAddResult, FieldCreationProperties, List, ListAddResult, ProcessHttpClientResponseException } from "@pnp/pnpjs";
 import ErrorHandler from '../helpers/ErrorHandler';
 import { IDataService } from '../interfaces/IDataService';
 import { IGraphUserdata } from "../interfaces/IGraphUserdata";
@@ -18,6 +18,7 @@ export default class DataService implements IDataService {
   public checkIfListAlreadyExists(listName: string): Promise<boolean> {
     return pnp.sp.web.lists.getByTitle(listName).get().then((listResult: List) => {
       if (listResult) {
+        console.log(listResult);
         return Promise.resolve(true);
       }
     })
@@ -30,14 +31,26 @@ export default class DataService implements IDataService {
         }
       });
   }
-  public createList(listName: string): Promise<IList> {
-    return pnp.sp.web.lists.add(listName, "List to configure the org chart webpart", 100, true).then((orgListAddResult: ListAddResult) => {
-      return this.configureOrgList((orgListAddResult)).then(() => {
-        return pnp.sp.web.lists.getById(orgListAddResult.data.Id).views.get().then((views: any[]) => {
-          let defaultView: any = views.filter((v) => { return v.DefaultView === true; }).shift();
-          return Promise.resolve(<IList>{ Id: orgListAddResult.data.Id, Title: orgListAddResult.data.Title, ParentWebUrl: orgListAddResult.data.ParentWebUrl, NavUrl: defaultView.ServerRelativeUrl });
+
+  public async createList(listName: string): Promise<IList> {
+    return await pnp.sp.web.lists.add(listName, "List to configure the org chart webpart", 100, true).then(async (orgListAddResult: ListAddResult) => {
+      console.log(orgListAddResult);
+
+      /*
+        ORG_Department
+        ORG_Description
+        ORG_Picture
+        ORG_MyReportees
+        ORG_MyReportees_ID, F84FC9D9-6307-44BA-84C5-C029C0D19BE8
+       */
+      return await this.configureOrgList((orgListAddResult))
+        .then(() => {
+          return pnp.sp.web.lists.getById(orgListAddResult.data.Id).views.get()
+            .then((views: any[]) => {
+              let defaultView: any = views.filter((v) => { return v.DefaultView === true; }).shift();
+              return Promise.resolve(<IList>{ Id: orgListAddResult.data.Id, Title: orgListAddResult.data.Title, ParentWebUrl: orgListAddResult.data.ParentWebUrl, NavUrl: defaultView.ServerRelativeUrl });
+            });
         });
-      });
     }).catch(ErrorHandler.handleError);
   }
 
@@ -47,6 +60,7 @@ export default class DataService implements IDataService {
       SPHttpClient.configurations.v1)
       .then((response: SPHttpClientResponse) => response.json())
       .then((jsonData: { value: IPersonListItem[] }) => {
+        console.log(jsonData);
         return jsonData.value;
       }).catch(ErrorHandler.handleError);
   }
@@ -113,18 +127,70 @@ export default class DataService implements IDataService {
 
   //#region private methods
 
-  private configureOrgList(spListAddResult: ListAddResult): Promise<void> {
-    return spListAddResult.list.contentTypes.addAvailableContentType("0x0100F4C266967DF54F5FAB9CDAA2A09D51C9").then((addedCTResult: ContentTypeAddResult) => {
-      return this.getItemCT(spListAddResult).then((contentype: SPContentType) => {
-        return this.updateLookupField(spListAddResult.list, spListAddResult.data).then(() => {
-          return this.updateView(spListAddResult.list).then(() => {
-            return spListAddResult.list.contentTypes.getById(contentype.StringId).delete().then(() => {
-              return Promise.resolve();
-            });
-          });
+  private async configureOrgList(spListAddResult: ListAddResult): Promise<void> {
+    try {
+      console.log(`invoking configureOrgList`, spListAddResult);
+
+      console.log(`Adding Field: ORG_Department`);
+      let fcpDepartment: FieldCreationProperties = {
+        Title: "Department"
+      };
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addText("ORG_Department", null, fcpDepartment)
+        .then((field: FieldAddResult) => {
+          console.log(`success`);
+        }).catch((err: any) => {
+          console.warn(err);
         });
-      });
-    }).catch(ErrorHandler.handleError);
+
+      console.log(`Adding Field: ORG_Description`);
+      let fcpDescription: FieldCreationProperties = {
+        Title: "Description"
+      };
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addText("ORG_Description", null, fcpDescription)
+        .then((field: FieldAddResult) => {
+          console.log(`success`);
+        })
+        .catch((err: any) => {
+          console.warn(err);
+
+        });
+
+      console.log(`Adding Field: ORG_Picture`);
+      let fcpPicture: FieldCreationProperties = {
+        Title: "Picture"
+      };
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addUrl("ORG_Picture", null, fcpPicture)
+        .then((field: FieldAddResult) => {
+          console.log(`success`);
+        })
+        .catch((err: any) => {
+          console.warn(err);
+        });
+
+      console.log(`Adding Field: ORG_MyReportees`);
+      let fcpMyReportees: FieldCreationProperties = {
+        Title: "My Reportees"
+      };
+      await pnp.sp.web.lists.getById(spListAddResult.data.Id).fields.addLookup("ORG_MyReportees", spListAddResult.data.Id, "Title", fcpMyReportees)
+        .then((field: FieldAddResult) => {
+          console.log(`success`);
+        })
+        .catch((err: any) => {
+          console.warn(err);
+        });
+
+      console.log(spListAddResult);
+      return this.updateLookupField(spListAddResult.list, spListAddResult.data)
+        .then(() => {
+          return this.updateView(spListAddResult.list)
+            .then(() => {
+              console.log(`Complete`);
+            });
+        });
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
 
   private updateView(spList: List): Promise<void> {
@@ -142,6 +208,7 @@ export default class DataService implements IDataService {
   }
 
   private updateLookupField(spList: List, listData: SPListData): Promise<void> {
+    console.log(`updateLookupField`, spList, listData);
     return spList.fields.getByInternalNameOrTitle("ORG_MyReportees").update({
       "SchemaXml":
         `<Field Type="LookupMulti"
@@ -165,6 +232,7 @@ export default class DataService implements IDataService {
 
   private getItemCT(spListAddResult: ListAddResult): Promise<SPContentType> {
     return spListAddResult.list.contentTypes.get().then((contentTypes: SPContentType[]) => {
+      console.log(contentTypes);
       let filteredCTs = contentTypes.filter((ct) => ct.Name === "Item");
       if (filteredCTs.length === 1) {
         return Promise.resolve(filteredCTs[0]);

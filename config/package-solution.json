@@ -17,7 +17,7 @@
     "webApiPermissionRequests": [
       {
         "resource": "Microsoft Graph",
-        "scope": "User.ReadBasic.All"
+        "scope": "User.Read User.ReadBasic.All  User.Read.All Directory.Read.All"
       }
     ],
     "features": [{

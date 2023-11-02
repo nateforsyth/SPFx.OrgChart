@@ -1,4 +1,4 @@
-import { Environment, EnvironmentType, Version } from '@microsoft/sp-core-library';
+import { Environment, EnvironmentType } from '@microsoft/sp-core-library';
 import { IPropertyPaneConfiguration, IPropertyPaneDropdownOption, PropertyPaneDropdown, PropertyPaneToggle } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from "@microsoft/sp-webpart-base";
 import pnp, { ProcessHttpClientResponseException } from "@pnp/pnpjs";
@@ -89,10 +89,6 @@ export default class OrgChartWebPart extends BaseClientSideWebPart<IOrgChartWebP
     );
 
     ReactDom.render(element, this.domElement); //inject into webpart dom
-  }
-
-  protected get dataVersion(): Version {
-    return Version.parse('1.0');
   }
 
   protected onPropertyPaneConfigurationStart(): void {
