@@ -51,15 +51,11 @@ I am currently working on YouTube tutorial series covering SPFx development, the
 
 ### Creating and fast-serving your first SharePoint Framework (SPFx) Web Part
 
-This video details how to set up your SPFx development environment.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Z82aM1ZQ7XU?si=sRyZF3UNNt1Eg3Q5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[This video](https://www.youtube.com/embed/Z82aM1ZQ7XU?si=sRyZF3UNNt1Eg3Q5) details how to set up your SPFx development environment.
 
 ### Functional React - refactor your Class components within a SharePoint Framework (SPFx) Web Part
 
-This video details how to refactor SPFx/React class components to be functional.
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/9-A1fD02kOo?si=mhzRHsgYVKa9Q7bJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[This video](https://www.youtube.com/embed/9-A1fD02kOo?si=mhzRHsgYVKa9Q7bJ) details how to refactor SPFx/React class components to be functional.
 
 
 # Original implementation
