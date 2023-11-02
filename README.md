@@ -65,10 +65,10 @@ I am currently working on YouTube tutorial series covering SPFx development, the
 SharePoint Framework (SPFx) webpart to display organization hierarchy.
 
 **Big tiles**
-![SPFx-org-chart-big-tiles](https://github.com/Vansyork/SPFx-Org-Chart/blob/master/readme-images/Aantekening%202019-10-25%20144725.png?raw=true)
+![SPFx-org-chart-big-tiles](https://github.com/nateforsyth/SPFx.OrgChart/blob/master/readme-images/Aantekening%202019-10-25%20144725.png?raw=true)
 
 **Small tiles**
-![SPFx-org-chart-small-tiles](https://github.com/Vansyork/SPFx-Org-Chart/blob/master/readme-images/Aantekening%202019-10-25%20145206.png?raw=true)
+![SPFx-org-chart-small-tiles](https://github.com/nateforsyth/SPFx.OrgChart/blob/master/readme-images/Aantekening%202019-10-25%20145206.png?raw=true)
 
 
 ### Building the code  
@@ -117,7 +117,7 @@ gulp package-solution --ship
  - Start with adding a few items before setting the **My Reportees** field.
  
  **Config list**
- ![SPFx-org-chart-big-tiles](https://github.com/Vansyork/SPFx-Org-Chart/blob/master/readme-images/Aantekening%202019-10-25%20141134.png?raw=true)
+ ![SPFx-org-chart-big-tiles](https://github.com/nateforsyth/SPFx.OrgChart/blob/master/readme-images/Aantekening%202019-10-25%20141134.png?raw=true)
 
  #### Webpart Property Pane configurations
  
@@ -131,4 +131,4 @@ gulp package-solution --ship
 |Create Configuration List button|Will display a dialog to create a new Configuration list |
 
 **Webpart properties**
-![SPFx-org-chart-big-tiles](https://github.com/Vansyork/SPFx-Org-Chart/blob/master/readme-images/Aantekening%202019-10-25%20145442.png?raw=true)
+![SPFx-org-chart-big-tiles](https://github.com/nateforsyth/SPFx.OrgChart/blob/master/readme-images/Aantekening%202019-10-25%20145442.png?raw=true)
