@@ -14,6 +14,14 @@ Regarding base functionality within [Vansyork](https://github.com/Vansyork) > **
 
 It was observed that the initial codebase included broken code for creation of Lists using Content Types - it used hard-coded Content Type IDs for Content Types that hadn't been created.
 
+It used the elements.xml file to attempt to provision assets on installation, however the content appears to be malformed with invalid field references - I suspect changes to SharePoint Field schemas to be the culprit. I do not have time to make it work so have stripped it out.
+
+Here's the stack trace.
+
+~~~txt
+Details: Deployment failed in host web https://[tenantName].sharepoint.com/sites/[siteName] for app spfx-orgchart/9bf2b53d-2cb4-46c2-99cc-f62d6462a80d. System.Exception: HandleProvisioningException rethrowing: Invalid field name. {9390d837-3f84-4302-b615-b204b998b9d6} https://[tenantName].sharepoint.com/sites/[siteName] ---> System.ArgumentException: Invalid field name. {9390d837-3f84-4302-b615-b204b998b9d6} https://[tenantName].sharepoint.com/sites/[siteName] at Microsoft.SharePoint.SPFieldCollection.GetFieldById(Guid fieldId, Boolean bThrowException) at Microsoft.SharePoint.SPFieldLinkCollection.Update(XmlReader xrdr) at Microsoft.SharePoint.SPContentType.LoadWithFieldLinks(XmlReader xrdr, String strFlnks, Boolean bSyncUpVersion, Boolean fMerge) at Microsoft.SharePoint.SPContentTypeElement.ElementActivated(SPFeaturePropertyCollection props, SPSqlCommand sqlcmdAppendOnly, SPWebApplication webApp, SPSite site, SPWeb webNull, Boolean fForce) at Microsoft.SharePoint.Administration.SPElementDefinitionCollection.ProvisionFieldsAndContentTypes(SPFeaturePropertyCollection props, SPSite site, SPWeb web, SPFeatureActivateFlags activateFlags, Boolean fForce) --- End of inner exception stack trace --- at Microsoft.SharePoint.SPFeature.HandleProvisioningException(Exception e, Boolean force) at Microsoft.SharePoint.Administration.SPElementDefinitionCollection.ProvisionFieldsAndContentTypes(SPFeaturePropertyCollection props, SPSite site, SPWeb web, SPFeatureActivateFlags activateFlags, Boolean fForce) at Microsoft.SharePoint.Administration.SPElementDefinitionCollection.ProvisionElements(SPFeaturePropertyCollection props, SPWebApplication webapp, SPSite site, SPWeb web, SPFeatureActivateFlags activateFlags, Boolean fForce) at Microsoft.SharePoint.SPFeature.ProvisionElements(SPElementDefinitionCollection elemdefcoll, SPFeaturePropertyCollection props, SPWebApplication webapp, SPSite site, SPWeb web, SPFeatureActivateFlags activateFlags, Boolean fForce) at Microsoft.SharePoint.SPFeature.Activate(SPSite siteParent, SPWeb webParent, SPFeaturePropertyCollection props, SPFeatureActivateFlags activateFlags, Boolean fForce) at Microsoft.SharePoint.SPFeatureCollection.AddInternal(SPFeatureDefinition featdef, Version version, SPFeaturePropertyCollection properties, SPFeatureActivateFlags activateFlags, Boolean force, Boolean fMarkOnly) at Microsoft.SharePoint.Packaging.SPTargetWebDeploymentGroup.InstallOrUpgrade(SPSite site, Nullable`1& solutionId, Boolean& swapNeeded)
+~~~
+
 
 ### Use of very old dependencies
 
@@ -43,7 +51,13 @@ I've refactored as little as possible to be able to simply compile and use the O
 
 This should be able to form the basis for future extensibility, once dependencies have been updated.
 
+
+### AAD integration has been removed
+
 I tested the AAD integration, however it is out of the scope for what I wanted to achieve, therefore cannot confirm whether it works. It has been struck out of the **Webpart properties** section below.
+
+I believe AAD integration to be irrelevant now due to Microsoft introducing their own (polished) [Organization Chart](https://support.microsoft.com/en-gb/office/use-the-organization-chart-web-part-77e3fd2e-568c-454c-a0b4-611eb79fce11) which is currently available to [targeted release tenants](https://learn.microsoft.com/en-GB/microsoft-365/admin/manage/release-options-in-office-365?view=o365-worldwide).
+
 
 ## Guides
 
